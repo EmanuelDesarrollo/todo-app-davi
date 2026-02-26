@@ -8,12 +8,19 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useTaskViewModel } from '../viewModel/useTaskViewModel';
 import TaskItem from '../../../components/TaskItem';
 import FilterBar from '../../../components/FilterBar';
 import { TaskSchema } from '../../../storage/TaskSchema';
+import { TaskStackParamList } from '../../../navigation/types';
+
+type DashboardNavProp = StackNavigationProp<TaskStackParamList, 'TaskDashboard'>;
 
 const TaskDashboard = () => {
+
+  const navigation = useNavigation<DashboardNavProp>();
 
   // Estados y logica de negocio encapsulados en el ViewModel
   const {
@@ -25,12 +32,20 @@ const TaskDashboard = () => {
     syncTasks,
     toggleTask } = useTaskViewModel();
 
+  // Navega al detalle de la tarea seleccionada.
+  const handleTaskPress = useCallback(
+    (taskId: number) => {
+      navigation.navigate('TaskDetail', { taskId });
+    },
+    [navigation],
+  );
+
   // Renderizado de cada tarea en la lista.
   const renderTask = useCallback(
     ({ item }: { item: TaskSchema }) => (
-      <TaskItem task={item} onToggle={toggleTask} />
+      <TaskItem task={item} onToggle={toggleTask} onPress={handleTaskPress} />
     ),
-    [toggleTask],
+    [toggleTask, handleTaskPress],
   );
 
   // Clave unica para cada tarea.

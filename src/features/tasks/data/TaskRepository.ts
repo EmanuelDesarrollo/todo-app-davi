@@ -2,6 +2,15 @@ import Realm from 'realm';
 import { TaskSchema } from '../../../storage/TaskSchema';
 import { fetchTodos } from '../../../api/todosApi';
 
+// Lista de nombres de usuario genéricos para asignar a tareas sin nombre de usuario.
+const RAMDOM_NAMES = [
+  'Cristian Garcia',
+  'Emanuel Buendia',
+  'Santiago Lopez',
+  'Karina Vargas',
+  'Daniel Fernandez',
+]
+
 /**
  * @description Sincroniza las tareas locales con las tareas obtenidas de la API.
  * @param realm Objeto Realm para acceder a la base de datos local.
@@ -11,6 +20,14 @@ export const syncTasksFromApi = async (realm: Realm): Promise<void> => {
   const tasks = await fetchTodos();
   realm.write(() => {
     tasks.forEach(task => {
+
+      // Si no tenemos nombre le asignamos un nombre de usuario genérico basado en el userId.
+      if (!task.userName) {
+        // Se asigna un nombre de usuario aleatorio de la lista RAMDOM_NAMES para cada tarea que no tenga un nombre de usuario asignado.
+        const randomIndex = Math.floor(Math.random() * RAMDOM_NAMES.length);
+        task.userName = RAMDOM_NAMES[randomIndex];
+      }
+
       // Usamos create con UpdateMode.Modified para insertar o actualizar tareas según su ID.
       realm.create(TaskSchema, task, Realm.UpdateMode.Modified);
     });

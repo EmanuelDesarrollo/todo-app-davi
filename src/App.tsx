@@ -11,7 +11,7 @@ LogBox.ignoreLogs([
 
 export default function App() {
   return (
-    <RealmProvider schema={[TaskSchema]}>
+    <RealmProvider schema={[TaskSchema]} schemaVersion={2}>
       <NavigationContainer>
         <TaskStack />
       </NavigationContainer>

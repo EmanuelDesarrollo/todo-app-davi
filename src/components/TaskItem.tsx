@@ -10,9 +10,10 @@ import { TaskSchema } from '../storage/TaskSchema';
 interface TaskItemProps {
   task: TaskSchema;
   onToggle: (id: number) => void;
+  onPress?: (id: number) => void;
 }
 
-const TaskItem = ({ task, onToggle }: TaskItemProps) => {
+const TaskItem = ({ task, onToggle, onPress }: TaskItemProps) => {
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -27,22 +28,24 @@ const TaskItem = ({ task, onToggle }: TaskItemProps) => {
   }, [task.id, onToggle, scale]);
 
   return (
-    <Animated.View style={[styles.container, animatedStyle]}>
-      <View style={styles.textContainer}>
-        <Text
-          style={[styles.taskTitle, task.completed && styles.completedTitle]}
-          numberOfLines={2}
-        >
-          {task.todo}
-        </Text>
-        <Text style={styles.userLabel}>User #{task.userId}</Text>
-      </View>
-      <TouchableOpacity onPress={handleToggle} activeOpacity={0.7} style={styles.checkboxWrapper}>
-        <View style={[styles.checkbox, task.completed && styles.checkboxChecked]}>
-          {task.completed && <Text style={styles.checkmark}>✓</Text>}
+    <TouchableOpacity onPress={() => onPress?.(task.id)} activeOpacity={onPress ? 0.85 : 1} disabled={!onPress}>
+      <Animated.View style={[styles.container, animatedStyle]}>
+        <View style={styles.textContainer}>
+          <Text
+            style={[styles.taskTitle, task.completed && styles.completedTitle]}
+            numberOfLines={2}
+          >
+            {task.todo}
+          </Text>
+          <Text style={styles.userLabel}>User #{task.userId}</Text>
         </View>
-      </TouchableOpacity>
-    </Animated.View>
+        <TouchableOpacity onPress={handleToggle} activeOpacity={0.7} style={styles.checkboxWrapper}>
+          <View style={[styles.checkbox, task.completed && styles.checkboxChecked]}>
+            {task.completed && <Text style={styles.checkmark}>✓</Text>}
+          </View>
+        </TouchableOpacity>
+      </Animated.View>
+    </TouchableOpacity>
   );
 };
 

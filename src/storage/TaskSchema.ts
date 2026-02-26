@@ -5,6 +5,7 @@ export class TaskSchema extends Realm.Object<TaskSchema> {
   todo!: string;
   completed!: boolean;
   userId!: number;
+  userName?: string;
 
   static schema: Realm.ObjectSchema = {
     name: 'Task',
@@ -14,6 +15,7 @@ export class TaskSchema extends Realm.Object<TaskSchema> {
       todo: 'string',
       completed: 'bool',
       userId: 'int',
+      userName: 'string?',
     },
   };
 }

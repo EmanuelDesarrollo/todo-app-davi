@@ -10,6 +10,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { TaskStackParamList } from '../../../navigation/types';
 import { useTaskDetailViewModel } from '../viewModel/useTaskDetailViewModel';
+import { AvatarView } from 'module-app-todo-davi';
+
 
 type Props = StackScreenProps<TaskStackParamList, 'TaskDetail'>;
 
@@ -48,9 +50,7 @@ const TaskDetail = ({ route, navigation }: Props) => {
 				{/* User Card */}
 				<View style={styles.userCard}>
 					{/* Avatar placeholder — integrar componente nativo aquí */}
-					<View style={styles.avatar}>
-						<Text style={styles.avatarText}>AV</Text>
-					</View>
+					<AvatarView name={task.userName ?? `A V`} style={styles.avatar} />
 					<Text style={styles.userName}>
 						{task.userName ?? `Usuario #${task.userId}`}
 					</Text>
@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#F4F6F9',
 	},
-
 	/* Header */
 	header: {
 		flexDirection: 'row',

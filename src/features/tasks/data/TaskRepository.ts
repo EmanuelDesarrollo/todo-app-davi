@@ -5,7 +5,7 @@ import { fetchTodos } from '../../../api/todosApi';
 // Lista de nombres de usuario genéricos para asignar a tareas sin nombre de usuario.
 const RAMDOM_NAMES = [
   'Cristian Garcia',
-  'Emanuel Buendia',
+  'Emanuel Buendia Tascon',
   'Santiago Lopez',
   'Karina Vargas',
   'Daniel Fernandez',

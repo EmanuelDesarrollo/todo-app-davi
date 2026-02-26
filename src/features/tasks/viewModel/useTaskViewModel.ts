@@ -1,4 +1,5 @@
 import { useEffect, useCallback } from 'react';
+import { Alert } from 'react-native';
 import { useQuery, useRealm } from '@realm/react';
 import { TaskSchema } from '../../../storage/TaskSchema';
 import { syncTasksFromApi, toggleTaskCompletion } from '../data/TaskRepository';
@@ -37,8 +38,24 @@ export const useTaskViewModel = () => {
     setIsSyncing(true);
     try {
       await syncTasksFromApi(realm);
-    } catch (error) {
-      console.error('Sync failed:', error);
+    } catch (error: any) {
+      const isNetworkError =
+        error?.message === 'Network Error' ||
+        error?.code === 'ECONNABORTED' ||
+        error?.code === 'ERR_NETWORK' ||
+        error?.code === 'ETIMEDOUT' ||
+        !error?.response;
+
+      if (isNetworkError) {
+        Alert.alert(
+          'Sin conexión',
+          'No se pudo sincronizar. Verifica tu conexión a internet e intenta nuevamente.',
+          [
+            { text: 'Cancelar', style: 'cancel' },
+            { text: 'Reintentar', onPress: syncTasks },
+          ],
+        );
+      }
     } finally {
       setIsSyncing(false);
     }

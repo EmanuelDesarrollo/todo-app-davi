@@ -37,7 +37,7 @@ const TaskItem = ({ task, onToggle, onPress }: TaskItemProps) => {
           >
             {task.todo}
           </Text>
-          <Text style={styles.userLabel}>User #{task.userId}</Text>
+          <Text style={styles.userLabel}>#{task.userId} - {task.userName ?? `Usuario #${task.userId}`}</Text>
         </View>
         <TouchableOpacity onPress={handleToggle} activeOpacity={0.7} style={styles.checkboxWrapper}>
           <View style={[styles.checkbox, task.completed && styles.checkboxChecked]}>
